@@ -3,6 +3,12 @@
 Tentative syllabus:
 
 - Introduction and Installation
+   1. Introduction to Cython
+   2. Build and Running Cython Code
+   3. Extenstion Types
+   4. Wrapping C library with Cython
+   5. Using C++ in Cython
+   6. Example Code: chatroom (tentative)
 - Quick Prototyping for Speed
    1. When and when not to use cython for prototyping and speed up
    2. Fused type, type inference and Jedi typer automatic type injection
