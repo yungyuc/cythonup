@@ -15,19 +15,19 @@ $ python -m lax -s 100 -a 50
 Use four different runners to get the same animation:
 
 ```bash
-$ python -m lax -s 100 -a 50 -c python
-$ python -m lax -s 100 -a 50 -c numpy
-$ python -m lax -s 100 -a 50 -c cython
-$ python -m lax -s 100 -a 50 -c c
+$ python -m lax -s 100 -a 50 -m python
+$ python -m lax -s 100 -a 50 -m numpy
+$ python -m lax -s 100 -a 50 -m cython
+$ python -m lax -s 100 -a 50 -m c
 ```
 
 Skip the animation for the end plot:
 
 ```bash
-$ python -m lax -s 100 -c python
-$ python -m lax -s 100 -c numpy
-$ python -m lax -s 100 -c cython
-$ python -m lax -s 100 -c c
+$ python -m lax -s 100 -m python
+$ python -m lax -s 100 -m numpy
+$ python -m lax -s 100 -m cython
+$ python -m lax -s 100 -m c
 ```
 
 Benchmark the four runners:
