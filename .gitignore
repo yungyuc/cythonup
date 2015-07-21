@@ -247,6 +247,9 @@ docs/_build/
 # PyBuilder
 target/
 
+# iPython
+.ipynb_checkpoints/
+
 
 ### C++
 # Compiled Object files
