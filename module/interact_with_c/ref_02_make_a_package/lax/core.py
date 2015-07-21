@@ -4,9 +4,7 @@ import argparse
 
 import numpy as np
 from matplotlib import pyplot as plt
-from matplotlib import animation
 
-from .march_cython import march_cython
 from .march_c import march_c
 
 
@@ -14,30 +12,6 @@ from .march_c import march_c
 Example code that uses the Lax-Wendroff scheme to solve the simple advection
 equation $u_t + a u_x = 0$.
 """
-
-
-###############################################################################
-# Here are the core of our numeric method.
-###############################################################################
-def march_python(cfl, sol, soln):
-    """Pure Python implementation of Lax-Wendroff scheme"""
-    itmax = sol.shape[0]-1
-    it = 1
-    while it < itmax:
-        soln[it] = (1 - cfl*cfl) * sol[it]
-        soln[it] += cfl * (cfl+1) / 2 * sol[it-1]
-        soln[it] += cfl * (cfl-1) / 2 * sol[it+1]
-        it += 1
-    sol[:] = soln[:]
-
-
-def march_numpy(cfl, sol, soln):
-    """NumPy array-based implementation of Lax-Wendroff scheme"""
-    soln[:] = sol[:]
-    soln *= 1 - cfl*cfl
-    soln[1:] += cfl * (cfl+1) / 2 * sol[:-1]
-    soln[:-1] += cfl * (cfl-1) / 2 * sol[1:]
-    sol[:] = soln[:]
 
 
 ###############################################################################
@@ -81,20 +55,9 @@ class HarmonicMotion(object):
 
 
 ###############################################################################
-# Here are the runners.
+# Here is the runner.
 ###############################################################################
-def run(marcher, steps=300, number=1, **kw):
-    """Run simulation without output"""
-    hm = HarmonicMotion(number)
-    hm.marcher = marcher
-    it = 0
-    while (it < steps):
-        hm.march()
-        it += 1
-    return hm
-
-
-def demonstrate(marcher, number, steps, animate, **kw):
+def show_step(marcher, number, steps, **kw):
     """Demonstrate simulation with graphical output"""
     # Set up harmonic driver.
     hm = HarmonicMotion(number)
@@ -112,26 +75,13 @@ def demonstrate(marcher, number, steps, animate, **kw):
     # Content line.
     line, = ax.plot(hm.xgrid/np.pi, hm.soln)
 
-    if animate > 0:
-        # Set up animator.
-        def init():
-            text.set_text(titlefmt % (0, steps))
-        def update(num):
-            """Update animation"""
-            hm.march()
-            text.set_text(titlefmt % (num+1, steps))
-            line.set_ydata(hm.soln)
-        ani = animation.FuncAnimation(
-            fig, update, frames=steps, interval=animate,
-            repeat=False, blit=False)
-    else:
-        # Loop to the end and draw.
-        it = 0
-        while it < steps:
-            hm.march()
-            it += 1
-        text.set_text(titlefmt % (it, steps))
-        line.set_ydata(hm.soln)
+    # Loop to the end and draw.
+    it = 0
+    while it < steps:
+        hm.march()
+        it += 1
+    text.set_text(titlefmt % (it, steps))
+    line.set_ydata(hm.soln)
 
     # Show it.
     plt.show()
@@ -152,31 +102,14 @@ def parse_command_line():
                         help="Steps to run")
     parser.add_argument("-n", dest="number", action="store",
                         type=wavenumber, default=2,
-                        help="Number of harmonics")
-    parser.add_argument("-a", dest="animate", action="store",
-                        type=float, default=0,
-                        help="Animation interval (millisec)")
-    parser.add_argument("-m", dest="marcher", action="store",
-                        type=str, default="numpy",
-                        help=("Select marcher from: "
-                              "python, numpy, cython, and c; "
-                              "default is %(default)s"))
-    parser.add_argument("-c", dest="compute_only", action="store_true",
-                        default=False,
-                        help="Compute only; no plotting")
+                        help="Number of harmonics; default is %(default)s")
     return parser.parse_args()
 
 
 def main():
     args = parse_command_line()
-    marcher = globals()["march_"+args.marcher]
     kw = vars(args)
-    kw.pop("marcher")
-
-    if args.compute_only:
-        run(marcher, **kw)
-    else:
-        demonstrate(marcher, **kw)
+    show_step(march_c, **kw)
 
 
 if __name__ == '__main__':
