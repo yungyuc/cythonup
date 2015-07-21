@@ -3,3 +3,4 @@ knapsack_1_improved
 knapsack_2_typed
 knapsack_3_memoryview
 *.c
+*.html
