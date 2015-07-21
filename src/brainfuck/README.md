@@ -27,8 +27,6 @@ To compile py/pyx by cython, in terminal,
 cython --embed --cplus bf5_improved.py
 g++ -O2 -o bf5 bf5_improved.cpp `python2-config --cflags --ldflags`
 ```
-To run bf5_improved in python or pypy, uncomment the line "# putchar = lambda x: print(chr(x), end="")".
-All other .py files can be run by python or pypy without modification.
 
 ## Supplement
 Along with these python implementations, a few examples in bf/ and a very fast c implementation in bff4 is also provided for testing and comparing. 

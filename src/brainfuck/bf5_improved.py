@@ -1,7 +1,8 @@
 from __future__ import print_function
 import sys
 
-# putchar = lambda x: print(chr(x), end="")
+# putchar is declared in .pxd, so this line only python interpreter, not cython.
+globals()['putchar'] = lambda x: print(chr(x), end="aaaaaa")
 
 cells = [0]*1000
 P = [ord(x) for x in open(sys.argv[1], "r").read()]
