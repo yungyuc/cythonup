@@ -21,6 +21,8 @@ It uses ks_10000_0 as default data. This can be override by specifying the file 
 ```bash
 time python kapsack_1_improved.py ks_400_0
 ```
+Data files in this directory are from Professor Pascal Van Hentenryck's discrete optimization course https://coursera.org/course/optimization
+
 These implementations are compatible with both python 2.7 and python 3.
 
 To compile and run them with cython, in terminal, 
