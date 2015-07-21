@@ -3,10 +3,10 @@
 This directory contains 4 python implementations of knapsack problem solver. 
 All 4 implementations share the same algorithm, but with different implementation details.
 
-knapsack_0_original: original implementation, very straightforward. 
-knapsack_1_improved: removing some temporary lists and list copy to improve speed.
-knapsack_2_typed: add type annotation
-knapsack_3_memoryview: use cython typed memoryview
+* knapsack_0_original: original implementation, very straightforward. 
+* knapsack_1_improved: removing some temporary lists and list copy to improve speed.
+* knapsack_2_typed: add type annotation
+* knapsack_3_memoryview: use cython typed memoryview
 
 ## Usage
 
