@@ -1,4 +1,6 @@
-# A simple solver of knapsack problem
+# Example: simple solver of knapsack problem
+
+author: tjwei
 
 This directory contains 4 python implementations of knapsack problem solver. 
 All 4 implementations share the same algorithm, but with different implementation details.
