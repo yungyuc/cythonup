@@ -12,7 +12,7 @@ techniques used:
 import random, sys
 from math import *
 SIZE = 9
-GAMES = 15000
+GAMES = 5000
 KOMI = 7.5
 EMPTY, WHITE, BLACK = 0, 1, 2
 SHOW = {EMPTY: '.', WHITE: 'o', BLACK: 'x'}
@@ -34,11 +34,11 @@ class Square:
         self.pos = pos
         self.timestamp = TIMESTAMP
         self.removestamp = TIMESTAMP
-        self.zobrist_strings = [random.randrange(sys.maxint) for i in range(3)]
+        self.zobrist_strings = [random.randrange(sys.maxsize) for i in range(3)]
 
     def set_neighbours(self): 
         x = self.pos%SIZE
-        y = self.pos / SIZE
+        y = self.pos // SIZE
         self.neighbours = []
         for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
             newx, newy = x + dx, y + dy
@@ -104,8 +104,8 @@ class Square:
 class EmptySet:
     def __init__(self, board):
         self.board = board
-        self.empties = range(SIZE*SIZE)
-        self.empty_pos = range(SIZE*SIZE)
+        self.empties = list(range(SIZE*SIZE))
+        self.empty_pos = list(range(SIZE*SIZE))
 
     def random_choice(self):
         choices = len(self.empties)
@@ -435,6 +435,8 @@ def computer_move(board):
 if __name__ == '__main__':
     random.seed(1)
     board = Board()
-    pos = computer_move(board)
-    board.move(pos)
-    print board
+    n = 1 if len(sys.argv) < 2 else int(sys.argv[1])
+    for i in range(n):
+        pos = computer_move(board)
+        board.move(pos)
+        print(to_xy(pos))
