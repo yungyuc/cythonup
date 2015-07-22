@@ -33,8 +33,9 @@ Instructor: Tzer-jen Wei
  5. Basic hands on examples
  6. More hands on examples (if time permits)
     - Discrete optimization algorithm
-    - Brain fuck interpreter
-    - CPU emulator
+    - Brainfuck interpreter
+    - ~~CPU emulator~~ (Edit: too similar to interpreter, add Go AI example instead)
+    - Go AI
 
 ## Interaction with C
 
