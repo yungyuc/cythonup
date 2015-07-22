@@ -1,4 +1,4 @@
-https://github.com/clsung/cythonup.git:
+https://github.com/yungyuc/cythonup.git:
   git.latest:
     - rev: master
     - user: vagrant
