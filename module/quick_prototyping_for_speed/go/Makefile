@@ -4,7 +4,7 @@ all: $(TARGET)
 
 %: %.py
 	cython --embed -a $<
-	g++ -O2 -o $@ $@.c `python2-config --cflags --ldflags`
+	g++ -Ofast -march=native -o $@ $@.c `python2-config --cflags --ldflags`
 
 
 .PHONY: clean

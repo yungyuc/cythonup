@@ -5,7 +5,7 @@ OPTIMIZATION = True
 CHECK_BOUNDS = False
 
 cython_start = """
-#cython: overflowcheck=False
+#cython: overflowcheck=False, boundscheck=False
 cdef extern from "stdio.h" nogil:
     int putchar (int c)
 cdef:
