@@ -5,4 +5,4 @@ cdef:
     vector[char] P
     int i, p, cnt
     char c
-    int PUTC, GETC, FWD, BWD, INC, DEC, START, END
+    char PUTC, GETC, FWD, BWD, INC, DEC, START, END

@@ -14,7 +14,7 @@ cdef:
 cdef inline int to_pos(int x,int y)
 cdef inline tuple to_xy(int pos)
 cdef class Square:
-    cdef public:
+    cdef:
         Board board
         int pos, color, used, ledges, temp_ledges
         int timestamp, removestamp
@@ -30,7 +30,7 @@ cdef class Square:
     cdef Square find(Square self, int update=*)
 
 cdef class EmptySet:
-    cdef public:
+    cdef:
         Board board
         list empties
         list empty_pos
@@ -41,8 +41,8 @@ cdef class EmptySet:
     cdef void set(self, int i, int pos)
 
 cdef class ZobristHash:
-    cdef public:
-        object board
+    cdef:
+        Board board
         set hash_set
         uint64_t hash
     @cython.locals(square=Square)
@@ -52,7 +52,7 @@ cdef class ZobristHash:
     cdef inline int dupe(self)
     
 cdef class Board:
-    cdef public:
+    cdef:
         list squares
         EmptySet emptyset
         ZobristHash zobrist
@@ -83,7 +83,7 @@ cdef class Board:
     cdef void check(self)
 
 cdef class UCTNode:
-    cdef public:
+    cdef:
         UCTNode bestchild
         int pos
         int wins
