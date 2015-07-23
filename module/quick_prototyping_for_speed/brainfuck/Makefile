@@ -1,4 +1,4 @@
-TARGET = bf0 bf1 bf2 bf3 bf4 bfx4 bf5 bfx5
+TARGET = bf0 bf1 bf2 bf3 bf4 bfx4 bf5 bfx5 bff4
 
 all: $(TARGET)
 
@@ -10,6 +10,8 @@ all: $(TARGET)
 
 bf%:	
 	g++ -O3 -march=native -o $@ $@*.cpp `python2-config --cflags --ldflags`
+bff4: bff4.c
+	gcc -O3 -march=native -o $@ bff4.c
 
 bf0: bf0_original.cpp bf0_original.py
 bf1: bf1_map.cpp bf1_map.pyx
