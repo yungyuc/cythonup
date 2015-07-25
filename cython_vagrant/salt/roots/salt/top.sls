@@ -8,3 +8,4 @@ base:
     - requirements.python3
     - cython3
     - requirements.ipython
+    - requirements.pypy
