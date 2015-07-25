@@ -9,3 +9,4 @@ base:
     - cython3
     - requirements.ipython
     - requirements.pypy
+    - requirements.numpy
