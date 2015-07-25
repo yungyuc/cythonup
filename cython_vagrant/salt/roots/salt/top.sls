@@ -10,3 +10,4 @@ base:
     - requirements.ipython
     - requirements.pypy
     - requirements.numpy
+    - requirements.jedi
