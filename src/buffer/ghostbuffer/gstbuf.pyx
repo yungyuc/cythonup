@@ -48,6 +48,8 @@ cdef class GhostArray:
         create = getattr(np, creator_name)
         self.nda = create(*args, **kw)
         ndim = len(self.nda.shape)
+        if ndim == 0:
+            raise ValueError("zero dimension is not allowed")
         assert ndim > 0
         # Initialize internal data.
         drange = self._calc_drange(self.nda.shape, gshape)

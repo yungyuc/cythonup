@@ -14,8 +14,9 @@ class TestCreation(unittest.TestCase):
         self.assertEqual(0, grr.nbytes)
 
     def test_scalar(self):
-        with self.assertRaises(AssertionError) as cm:
+        with self.assertRaises(ValueError) as cm:
             grr = GhostArray(1, creation="array")
+        self.assertTrue(cm.exception.args[0], "zero dimension is not allowed")
 
     def test_zeros(self):
         grr = GhostArray(3, creation="zeros")
