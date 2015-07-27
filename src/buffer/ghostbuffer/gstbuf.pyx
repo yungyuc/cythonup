@@ -56,20 +56,18 @@ cdef class GhostArray:
         cdef np.ndarray cnda = self.nda
         cdef char *ndhead = <char*>cnda.data
         ndhead += self.nda.itemsize * offset
-        IF GSTBUF_DEBUG_PRINT:
-            print(<unsigned long>cnda.data, <unsigned long>ndhead)
         self._data.elem = ndhead
         ## drange.
         self._data.drange = <np.npy_intp*>malloc(sizeof(np.npy_intp)*ndim*2)
         for it, (nghost, nbody) in enumerate(drange):
             self._data.drange[it*2  ] = nghost
             self._data.drange[it*2+1] = nbody
-        ## nd (just a duplication of PyArrayObject.nd).
+        ## ndim (just a duplication of PyArrayObject.nd).
         self._data.ndim = ndim
-        ## nd (just a duplication of PyArray_Descr.elsize).
+        ## elemsize (just a duplication of PyArray_Descr.elsize).
         self._data.elemsize = self.nda.itemsize
         IF GSTBUF_DEBUG_PRINT:
-            print("Initialized")
+            print("GSTBUF: Initialized")
 
     @staticmethod
     def _calc_drange(shape, gshape):
@@ -93,7 +91,7 @@ cdef class GhostArray:
         drange = [(ng, na-ng) for ng, na in zip(gshape, shape)]
         # Return.
         IF GSTBUF_DEBUG_PRINT:
-            print("drange =", drange)
+            print("GSTBUF: drange =", drange)
         return drange
 
     @staticmethod
@@ -108,7 +106,7 @@ cdef class GhostArray:
                 trail = np.multiply.reduce(shape[it+1:])
             offset += nghost * trail
         IF GSTBUF_DEBUG_PRINT:
-            print("offset =", offset)
+            print("GSTBUF: offset =", offset)
         return offset
 
     def __getattr__(self, name):
