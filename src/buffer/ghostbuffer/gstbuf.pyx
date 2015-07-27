@@ -174,6 +174,7 @@ cdef class GhostArray:
 
     def ranged_fill(self):
         assert self.is_separable
+        assert "int32" == self.nda.dtype
         gstbuf_ranged_fill((self._data)[0])
 
 

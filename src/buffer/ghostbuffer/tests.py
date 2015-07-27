@@ -214,4 +214,24 @@ class TestRangedFill(unittest.TestCase):
         self.assertEqual((0, 1, 2), tuple(grr.bodypart))
         self.assertEqual((-2, -1, 0, 1, 2), tuple(grr.nda))
 
+    def test_2d(self):
+        grr = GhostArray((5,3), gshape=2, dtype="int32")
+        grr.ranged_fill()
+        self.assertTrue((
+            np.array([[-6,-5,-4],
+                      [-3,-2,-1]], dtype="int32") ==
+            grr.ghostpart).all())
+        self.assertTrue((
+            np.array([[0,1,2],
+                      [3,4,5],
+                      [6,7,8]], dtype="int32") ==
+            grr.bodypart).all())
+        self.assertTrue((
+            np.array([[-6,-5,-4],
+                      [-3,-2,-1],
+                      [ 0, 1, 2],
+                      [ 3, 4, 5],
+                      [ 6, 7, 8]], dtype="int32") ==
+            grr.nda).all())
+
 # vim: set fenc=utf8 ff=unix nobomb ai et sw=4 ts=4 tw=79:
