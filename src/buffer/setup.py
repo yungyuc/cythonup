@@ -10,7 +10,7 @@ import numpy as np
 def main():
     extensions = cythonize([
         Extension("ghostbuffer.gstbuf",
-                  ["ghostbuffer/gstbuf.pyx"],
+                  ["ghostbuffer/gstbuf.pyx", "ghostbuffer/helper.c"],
                   include_dirs=[np.get_include()]),
     ])
     setup(

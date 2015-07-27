@@ -205,4 +205,13 @@ class TestParts(unittest.TestCase):
         self.assertEqual((2,4), grr.bodypart.shape)
         self.assertEqual(list(range(4,12)), list(grr.bodypart.ravel()))
 
+
+class TestRangedFill(unittest.TestCase):
+    def test_1d(self):
+        grr = GhostArray(5, gshape=2, dtype="int32")
+        grr.ranged_fill()
+        self.assertEqual((-2, -1), tuple(grr.ghostpart))
+        self.assertEqual((0, 1, 2), tuple(grr.bodypart))
+        self.assertEqual((-2, -1, 0, 1, 2), tuple(grr.nda))
+
 # vim: set fenc=utf8 ff=unix nobomb ai et sw=4 ts=4 tw=79:

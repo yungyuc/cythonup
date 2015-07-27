@@ -14,6 +14,10 @@ cdef extern from "stdlib.h":
     void free(void* ptr)
 
 
+cdef extern:
+    void gstbuf_ranged_fill(gstbuf_t gbuf)
+
+
 ctypedef struct gstbuf_t:
     char *elem
     # Dimension range: each dimension has a (nghost,nbody) pair.
@@ -145,15 +149,32 @@ cdef class GhostArray:
         return <unsigned long>(self._data.elem)
 
     @property
+    def is_separable(self):
+        cdef int ndim = self._data.ndim
+        if ndim == 1:
+            return True
+        cdef int it = 1
+        while it < ndim:
+            if self._data.drange[it*2] != 0:
+                return False
+            it += 1
+        return True
+
+    @property
     def ghostpart(self):
-        if tuple([0]*(self.ndim-1)) != self.gshape[1:]:
+        if not self.is_separable:
             raise ValueError("malformed ghost shape")
         return self.nda[:self.gshape[0],...]
 
     @property
     def bodypart(self):
-        if tuple([0]*(self.ndim-1)) != self.gshape[1:]:
+        if not self.is_separable:
             raise ValueError("malformed ghost shape")
         return self.nda[self.gshape[0]:,...]
+
+    def ranged_fill(self):
+        assert self.is_separable
+        gstbuf_ranged_fill((self._data)[0])
+
 
 # vim: set fenc=utf8 ft=pyrex ff=unix nobomb ai et sw=4 ts=4 tw=79:
