@@ -165,7 +165,7 @@ cdef class GhostArray:
     def ghostpart(self):
         if not self.is_separable:
             raise ValueError("malformed ghost shape")
-        return self.nda[:self.gshape[0],...]
+        return self.nda[self.gshape[0]-1::-1,...]
 
     @property
     def bodypart(self):
