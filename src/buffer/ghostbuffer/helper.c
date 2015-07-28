@@ -1,12 +1,7 @@
 #include <Python.h>
 #include <numpy/arrayobject.h>
 
-typedef struct {
-    char *elem;
-    npy_intp *drange;
-    int ndim;
-    int elemsize;
-} gstbuf_t;
+#include "gstbuf.h"
 
 /**
  * Assume gbuf is valid and separable.

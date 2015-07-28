@@ -18,12 +18,13 @@ cdef extern:
     void gstbuf_ranged_fill(gstbuf_t gbuf)
 
 
-ctypedef struct gstbuf_t:
-    char *elem
-    # Dimension range: each dimension has a (nghost,nbody) pair.
-    np.npy_intp *drange
-    int ndim
-    int elemsize
+cdef public:
+    ctypedef struct gstbuf_t:
+        char *elem
+        # Dimension range: each dimension has a (nghost,nbody) pair.
+        np.npy_intp *drange
+        int ndim
+        int elemsize
 
 
 cdef class GhostArray:
