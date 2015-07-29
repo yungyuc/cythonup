@@ -10,6 +10,9 @@
  * Assume gbuf has no ghost.
  */
 void gstbuf_print_int32(gstbuf_t gbuf) {
+    if (4 != gbuf.elemsize) {
+        return;
+    }
     int *elem = (int *)gbuf.elem;
     size_t nelem=gbuf.shape[0];
     for (int it=1; it<gbuf.ndim; it++) {

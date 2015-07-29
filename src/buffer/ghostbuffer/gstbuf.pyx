@@ -28,7 +28,7 @@
 
 from __future__ import absolute_import, division, print_function
 
-DEF GSTBUF_DEBUG_PRINT = 0
+from libc.stdlib cimport malloc, free
 
 import numpy as np
 cimport numpy as np
@@ -36,10 +36,7 @@ cimport numpy as np
 # Initialize NumPy.
 np.import_array()
 
-
-cdef extern from "stdlib.h":
-    void* malloc(size_t size)
-    void free(void* ptr)
+DEF GSTBUF_DEBUG_PRINT = 0
 
 
 cdef extern:
@@ -85,6 +82,8 @@ cdef class GhostArray:
         # Create the ndarray and thus control the life cycle.
         create = getattr(np, creator_name)
         self.nda = create(*args, **kw)
+        if not self.nda.flags.c_contiguous:
+            raise ValueError("not C contiguous")
         ndim = len(self.nda.shape)
         if ndim == 0:
             raise ValueError("zero dimension is not allowed")
@@ -97,7 +96,7 @@ cdef class GhostArray:
         cdef char *ndhead = <char*>cnda.data
         ndhead += self.nda.itemsize * offset
         self._data.elem = ndhead
-        ## shape.
+        ## shape (just a duplication of PyArrayObject.dimensions).
         if NULL != self._data.shape:
             free(self._data.shape)
         self._data.shape = <np.npy_intp*>malloc(sizeof(np.npy_intp)*ndim)
