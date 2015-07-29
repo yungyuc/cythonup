@@ -1,7 +1,24 @@
 #include <Python.h>
+#include <stdio.h>
+
 #include <numpy/arrayobject.h>
 
 #include "gstbuf.h"
+
+
+/**
+ * Assume gbuf has no ghost.
+ */
+void gstbuf_print_int32(gstbuf_t gbuf) {
+    int *elem = (int *)gbuf.elem;
+    size_t nelem=gbuf.shape[0];
+    for (int it=1; it<gbuf.ndim; it++) {
+        nelem *= gbuf.shape[it];
+    }
+    for (size_t jt=0; jt<nelem; jt++) {
+        printf("%lu: %d\n", jt, elem[jt]);
+    }
+}
 
 /**
  * Assume gbuf is valid and separable.

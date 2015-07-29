@@ -43,12 +43,14 @@ cdef extern from "stdlib.h":
 
 
 cdef extern:
+    void gstbuf_print_int32(gstbuf_t gbuf)
     void gstbuf_ranged_fill(gstbuf_t gbuf)
 
 
 cdef public:
     ctypedef struct gstbuf_t:
         char *elem
+        np.npy_intp *shape
         # Dimension range: each dimension has a (nghost,nbody) pair.
         np.npy_intp *drange
         int ndim
@@ -63,12 +65,15 @@ cdef class GhostArray:
     def __cinit__(self, *args, **kw):
         self._data = <gstbuf_t*>malloc(sizeof(gstbuf_t))
         self._data.elem = <char*>(NULL)
+        self._data.shape = <np.npy_intp*>(NULL)
         self._data.drange = <np.npy_intp*>(NULL)
         self._data.ndim = 0
         self._data.elemsize = 0
 
     def __dealloc__(self):
         if NULL != self._data:
+            if NULL != self._data.shape:
+                free(self._data.shape)
             if NULL != self._data.drange:
                 free(self._data.drange)
             free(self._data)
@@ -92,7 +97,15 @@ cdef class GhostArray:
         cdef char *ndhead = <char*>cnda.data
         ndhead += self.nda.itemsize * offset
         self._data.elem = ndhead
+        ## shape.
+        if NULL != self._data.shape:
+            free(self._data.shape)
+        self._data.shape = <np.npy_intp*>malloc(sizeof(np.npy_intp)*ndim)
+        for it in range(ndim):
+            self._data.shape[it] = self.nda.shape[it]
         ## drange.
+        if NULL != self._data.drange:
+            free(self._data.drange)
         self._data.drange = <np.npy_intp*>malloc(sizeof(np.npy_intp)*ndim*2)
         for it, (nghost, nbody) in enumerate(drange):
             self._data.drange[it*2  ] = nghost
@@ -200,6 +213,11 @@ cdef class GhostArray:
         if not self.is_separable:
             raise ValueError("malformed ghost shape")
         return self.nda[self.gshape[0]:,...]
+
+    def print_int32(self):
+        assert self._ghostaddr == self._bodyaddr
+        assert "int32" == self.nda.dtype
+        gstbuf_print_int32((self._data)[0])
 
     def ranged_fill(self):
         assert self.is_separable
