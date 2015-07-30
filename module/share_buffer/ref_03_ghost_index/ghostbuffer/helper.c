@@ -6,9 +6,6 @@
 #include "gstbuf.h"
 
 
-/**
- * Assume gbuf has no ghost.
- */
 void gstbuf_print_int32(gstbuf_t gbuf) {
     if (4 != gbuf.elemsize) {
         return;
@@ -19,9 +16,6 @@ void gstbuf_print_int32(gstbuf_t gbuf) {
     }
 }
 
-/**
- * Assume gbuf has no ghost.
- */
 void gstbuf_print_int32_md(gstbuf_t gbuf) {
     if (4 != gbuf.elemsize) {
         return;
@@ -48,9 +42,6 @@ void gstbuf_print_int32_md(gstbuf_t gbuf) {
     }
 }
 
-/**
- * Assume gbuf is valid and separable.
- */
 void gstbuf_ranged_fill(gstbuf_t gbuf) {
     size_t nelem;
     int *elem = (int *)gbuf.elem;

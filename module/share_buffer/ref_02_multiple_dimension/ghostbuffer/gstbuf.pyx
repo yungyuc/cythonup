@@ -43,7 +43,6 @@ cdef class GhostArray:
 
     def __init__(self, *args, **kw):
         # Pop all custom keyword arguments.
-        gshape = kw.pop("gshape", None)
         creator_name = kw.pop("creation", "empty")
         # Create the ndarray and thus control the life cycle.
         create = getattr(np, creator_name)
@@ -83,6 +82,10 @@ cdef class GhostArray:
         return self._data.ndim
 
     def print_int32(self):
+        assert "int32" == self.nda.dtype
+        gstbuf_print_int32((self._data)[0])
+
+    def print_int32_md(self):
         assert "int32" == self.nda.dtype
         gstbuf_print_int32((self._data)[0])
         gstbuf_print_int32_md((self._data)[0])
