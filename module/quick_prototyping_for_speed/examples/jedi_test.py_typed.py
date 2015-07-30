@@ -1,12 +1,12 @@
 import cython
-cython.declare(a='long', i='long', b='double', A='object', x='long')
+cython.declare(a='long', i='long', b='double', x='long')
 a=100
 b=30.5
 
 for i in range(10):
     x = i + 1
 
-@cython.locals(d='str', g='double', f='object', i='long', z='long')
+@cython.locals(d='str', g='double', f='list', i='long', z='long')
 def f(x):
     y, z = x, 3
     g = 5.0
@@ -18,7 +18,7 @@ def f(x):
         y = y + x 
         print(i+z)
 
-@cython.locals(a='str', b='long')
+@cython.locals(b='long')
 def func(a, b):
     print(a)
     a = 1
@@ -27,6 +27,17 @@ def func(a, b):
     return a, str(b)
 
 class A:
-    @cython.locals(i='long')
-    def f(i):
+    @cython.locals(i='long', self='object')
+    def f(self, i):
         i = 3
+
+        
+# conflict typing
+def f():
+    x=1
+    x="aaa"
+
+@cython.locals(uu='str')
+def standard_function():
+    uu="aaa".upper()
+    

@@ -23,5 +23,15 @@ def func(a, b):
     return a, str(b)
 
 class A:
-    def f(i):
+    def f(self, i):
         i = 3
+
+        
+# conflict typing
+def f():
+    x=1
+    x="aaa"
+
+def standard_function():
+    uu="aaa".upper()
+    
