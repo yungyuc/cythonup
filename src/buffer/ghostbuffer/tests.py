@@ -135,11 +135,13 @@ class TestGshape2d(unittest.TestCase):
         self.assertEqual((0,0), grr.gshape)
         self.assertEqual((10,20), grr.bshape)
         self.assertEqual(((0,10),(0,20)), grr.drange)
+        self.assertEqual(grr.nelem, grr.nda.size)
 
     def _check_negative(self, grr):
         self.assertEqual((0,0), grr.gshape)
         self.assertEqual((10,20), grr.bshape)
         self.assertEqual(((0,10),(0,20)), grr.drange)
+        self.assertEqual(grr.nelem, grr.nda.size)
 
     def test_negative(self):
         self._check_negative(GhostArray((10,20), gshape=-1))

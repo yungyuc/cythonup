@@ -50,6 +50,7 @@ cdef public:
         np.npy_intp *shape
         # Dimension range: each dimension has a (nghost,nbody) pair.
         np.npy_intp *drange
+        np.npy_intp nelem
         int ndim
         int elemsize
 
@@ -109,6 +110,8 @@ cdef class GhostArray:
         for it, (nghost, nbody) in enumerate(drange):
             self._data.drange[it*2  ] = nghost
             self._data.drange[it*2+1] = nbody
+        ## nelem.
+        self._data.nelem = self.nda.size
         ## ndim (just a duplication of PyArrayObject.nd).
         self._data.ndim = ndim
         ## elemsize (just a duplication of PyArray_Descr.elsize).
@@ -158,6 +161,10 @@ cdef class GhostArray:
 
     def __getattr__(self, name):
         return getattr(self.nda, name)
+
+    @property
+    def nelem(self):
+        return self._data.nelem
 
     @property
     def ndim(self):

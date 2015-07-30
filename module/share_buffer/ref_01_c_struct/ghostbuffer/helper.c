@@ -6,19 +6,12 @@
 #include "gstbuf.h"
 
 
-/**
- * Assume gbuf has no ghost.
- */
 void gstbuf_print_int32(gstbuf_t gbuf) {
     if (4 != gbuf.elemsize) {
         return;
     }
     int *elem = (int *)gbuf.elem;
-    npy_intp nelem=gbuf.shape[0];
-    for (int it=1; it<gbuf.ndim; it++) {
-        nelem *= gbuf.shape[it];
-    }
-    for (npy_intp jt=0; jt<nelem; jt++) {
+    for (npy_intp jt=0; jt<gbuf.nelem; jt++) {
         printf("%lu: %d\n", jt, elem[jt]);
     }
 }
