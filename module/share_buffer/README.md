@@ -18,6 +18,6 @@ In `03_ghost_index` directory:
 
 ```bash
 $ python setup.py build_ext --inplace
-$ python -c "from ghostbuffer import core; core.print_parts(shape=(5,4))"
-$ python -c "from ghostbuffer import core; core.print_parts(shape=(5,2,4))"
+$ python -c "from ghostbuffer import core; core.print_parts((5,4),2)"
+$ python -c "from ghostbuffer import core; core.print_parts((5,2,4),2)"
 ```

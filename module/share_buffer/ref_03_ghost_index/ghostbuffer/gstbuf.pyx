@@ -193,7 +193,6 @@ cdef class GhostArray:
     def print_int32_md(self):
         assert self._ghostaddr == self._bodyaddr
         assert "int32" == self.nda.dtype
-        gstbuf_print_int32((self._data)[0])
         gstbuf_print_int32_md((self._data)[0])
 
     def ranged_fill(self):

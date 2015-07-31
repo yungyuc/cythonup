@@ -11,7 +11,7 @@ def print_int32(num):
 
 def print_int32_md(shape):
     grr = gstbuf.GhostArray(shape, creation="empty", dtype="int32")
-    grr.nda[...] = np.arange(grr.nda.size, dtype="int32")[::-1].reshape(shape)
+    grr.nda[...] = np.arange(grr.nda.size, dtype="int32").reshape(shape)
     grr.print_int32_md()
     print(grr.nda)
 

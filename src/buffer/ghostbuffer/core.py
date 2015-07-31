@@ -14,4 +14,15 @@ def print_int32_md(shape):
     grr.print_int32()
     print(grr.nda)
 
+
+def print_parts(shape, gshape):
+    grr = gstbuf.GhostArray(shape, gshape=gshape, dtype="int32")
+    grr.ranged_fill()
+    print("Do I hold a correct pointer?",
+        "Yes" if grr._bodyaddr == grr._ghostaddr + grr.itemsize * grr.offset
+        else "No")
+    print("The whole array:\n", grr.nda)
+    print("The ghost part (first dimension reversed):\n", grr.ghostpart)
+    print("The body part:\n", grr.bodypart)
+
 # vim: set fenc=utf8 ff=unix nobomb ai et sw=4 ts=4 tw=79:

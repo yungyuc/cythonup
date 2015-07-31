@@ -87,7 +87,6 @@ cdef class GhostArray:
 
     def print_int32_md(self):
         assert "int32" == self.nda.dtype
-        gstbuf_print_int32((self._data)[0])
         gstbuf_print_int32_md((self._data)[0])
 
 # vim: set fenc=utf8 ft=pyrex ff=unix nobomb ai et sw=4 ts=4 tw=79:

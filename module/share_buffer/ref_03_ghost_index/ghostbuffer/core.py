@@ -16,7 +16,7 @@ def print_int32_md(shape):
     print(grr.nda)
 
 
-def print_parts(shape=(5,4), gshape=2):
+def print_parts(shape, gshape):
     grr = gstbuf.GhostArray(shape, gshape=gshape, dtype="int32")
     grr.ranged_fill()
     print("Do I hold a correct pointer?",
