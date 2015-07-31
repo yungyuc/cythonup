@@ -11,7 +11,8 @@ void gstbuf_print_int32(gstbuf_t gbuf) {
         return;
     }
     int *elem = (int *)gbuf.elem;
-    for (npy_intp jt=0; jt<gbuf.nelem; jt++) {
+    npy_intp jt;
+    for (jt=0; jt<gbuf.nelem; jt++) {
         printf("%lu: %d\n", jt, elem[jt]);
     }
 }
