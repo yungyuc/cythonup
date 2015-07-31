@@ -14,8 +14,9 @@ class TestCreation(unittest.TestCase):
         self.assertEqual(0, grr.nbytes)
 
     def test_scalar(self):
-        with self.assertRaises(AssertionError) as cm:
+        with self.assertRaises(ValueError) as cm:
             grr = GhostArray(1, creation="array")
+        self.assertTrue(cm.exception.args[0], "zero dimension is not allowed")
 
     def test_zeros(self):
         grr = GhostArray(3, creation="zeros")
@@ -134,11 +135,13 @@ class TestGshape2d(unittest.TestCase):
         self.assertEqual((0,0), grr.gshape)
         self.assertEqual((10,20), grr.bshape)
         self.assertEqual(((0,10),(0,20)), grr.drange)
+        self.assertEqual(grr.nelem, grr.nda.size)
 
     def _check_negative(self, grr):
         self.assertEqual((0,0), grr.gshape)
         self.assertEqual((10,20), grr.bshape)
         self.assertEqual(((0,10),(0,20)), grr.drange)
+        self.assertEqual(grr.nelem, grr.nda.size)
 
     def test_negative(self):
         self._check_negative(GhostArray((10,20), gshape=-1))
@@ -189,7 +192,7 @@ class TestParts(unittest.TestCase):
     def test_1d(self):
         grr = GhostArray(12, gshape=4, creation="arange")
         self.assertEqual(list(range(12)), list(grr.nda))
-        self.assertEqual(list(range(4)), list(grr.ghostpart))
+        self.assertEqual([3,2,1,0], list(grr.ghostpart))
         self.assertEqual(list(range(4,12)), list(grr.bodypart))
 
     def test_2d(self):
@@ -203,5 +206,34 @@ class TestParts(unittest.TestCase):
         self.assertEqual(list(range(4)), list(grr.ghostpart.ravel()))
         self.assertEqual((2,4), grr.bodypart.shape)
         self.assertEqual(list(range(4,12)), list(grr.bodypart.ravel()))
+
+
+class TestRangedFill(unittest.TestCase):
+    def test_1d(self):
+        grr = GhostArray(5, gshape=2, dtype="int32")
+        grr.ranged_fill()
+        self.assertEqual((-1, -2), tuple(grr.ghostpart))
+        self.assertEqual(( 0,  1, 2), tuple(grr.bodypart))
+        self.assertEqual((-2, -1, 0, 1, 2), tuple(grr.nda))
+
+    def test_2d(self):
+        grr = GhostArray((5,3), gshape=2, dtype="int32")
+        grr.ranged_fill()
+        # Ghost part.
+        self.assertEqual((2,3), grr.ghostpart.shape)
+        self.assertEqual([-3,-2,-1], list(grr.ghostpart[0]))
+        self.assertEqual([-6,-5,-4], list(grr.ghostpart[1]))
+        # Body part.
+        self.assertEqual((3,3), grr.bodypart.shape)
+        self.assertEqual([0,1,2], list(grr.bodypart[0]))
+        self.assertEqual([3,4,5], list(grr.bodypart[1]))
+        self.assertEqual([6,7,8], list(grr.bodypart[2]))
+        # Everything.
+        self.assertEqual((5,3), grr.nda.shape)
+        self.assertEqual([-6,-5,-4], list(grr.nda[0]))
+        self.assertEqual([-3,-2,-1], list(grr.nda[1]))
+        self.assertEqual([ 0, 1, 2], list(grr.nda[2]))
+        self.assertEqual([ 3, 4, 5], list(grr.nda[3]))
+        self.assertEqual([ 6, 7, 8], list(grr.nda[4]))
 
 # vim: set fenc=utf8 ff=unix nobomb ai et sw=4 ts=4 tw=79:
