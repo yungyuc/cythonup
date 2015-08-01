@@ -1,3 +1,5 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include "fibc.h"
 
 int fibc(int n) {
@@ -18,4 +20,5 @@ int main (int argc, char *argv[])
     for (i = 0; i < atoi(argv[2]); ++i)
       result = fibc(atoi(argv[1]));
     printf("%d\n", result);
+    return 1;
 }
