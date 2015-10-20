@@ -1,7 +1,7 @@
 
 # Usage
 
-Ubuntu 14.04
+On Ubuntu 14.04
 
 ```shell
   $ sudo apt-get update
@@ -18,4 +18,3 @@ Ubuntu 14.04
   # If you want to override the user name in the playbook.yml.
   $ ansible-playbook -u <user_name> -K -i inventory playbook.yml
 ```
-
