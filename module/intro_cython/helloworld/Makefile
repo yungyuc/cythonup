@@ -6,7 +6,7 @@ all: $(TARGET)
 	@echo "\nConverting to c code....."
 	cython --embed -a $<
 	@echo "\nBuilding binary.........."
-	g++ -O3 -march=native -o $@ $@.c `python2-config --cflags --ldflags`
+	g++ -w -O3 -march=native -o $@ $@.c `python2-config --cflags --ldflags`
 	@echo "\n"
 
 lib:
