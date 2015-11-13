@@ -3,7 +3,11 @@ from distutils.extension import Extension
 from Cython.Build import cythonize
 
 ext_modules=[
-    Extension("cm", sources=["cm.pyx"], libraries=["m"])
+    Extension("cm",
+              sources=["cm.pyx"],
+              libraries=["m"],
+              extra_compile_args=["-w"],
+             )
 ]
 
 setup(
