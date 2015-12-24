@@ -2,26 +2,36 @@
 - hosts: localhost
   connection: local
 
-  user: hoy
+  user: cython
 
   sudo: true
   gather_facts: no
 
+  vars:
+    # minaconda
+    miniconda_url: >
+      http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh
+
+    miniconda_home: '~/miniconda2'
+
   tasks:
+    - name: APT update
+      apt: update_cache=yes cache_valid_time=3600
+
     - name: install vim, git
-      apt: pkg={{item}} state=installed update_cache=yes
+      apt: pkg={{item}} state=installed
       with_items:
         - vim
         - git
 
     - name: install pypy
-      apt: pkg={{item}} state=installed update_cache=yes
+      apt: pkg={{item}} state=installed
       with_items:
         - pypy
         - pypy-dev
 
     - name: Install some python2 module ( pip, virtualenv, numpy, matplotlib )
-      apt: pkg={{item}} state=installed update_cache=yes
+      apt: pkg={{item}} state=installed
       with_items:
         - python-virtualenv
         - python-dev
@@ -57,3 +67,35 @@
     # - name: install cython3
     #   pip: name=cython executable=pip3
 
+    # Install miniconda
+    - name: check if conda already installed
+      stat: path={{ miniconda_home }}/bin/conda
+      register: bin_conda
+      #changed_when: bin_conda.stat.exists == False
+
+    - name: download miniconda installer
+      sudo: no
+      get_url:
+        url={{ miniconda_url }}
+        dest=/tmp/miniconda.sh
+        mode=0755
+      register: miniconda_downloaded
+      when: bin_conda.stat.exists == False
+
+    - name: install miniconda
+      sudo: no
+      shell: "/tmp/miniconda.sh -b -p {{ miniconda_home }} creates={{ miniconda_home }} executable=/bin/bash"
+      register: miniconda_installed
+      when: miniconda_downloaded | success
+      notify:
+        - remove miniconda setup script
+        - update conda to latest version
+
+  # handlers for miniconda role
+  handlers:
+    - name: remove miniconda setup script
+      file: name=/tmp/miniconda.sh state=absent
+
+    - name: update conda to latest version
+      sudo: no
+      shell: "{{ miniconda_home }}/bin/conda update conda --yes -q executable=/bin/bash"
